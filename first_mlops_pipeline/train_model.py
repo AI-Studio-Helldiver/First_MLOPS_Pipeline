@@ -11,7 +11,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
 
 
-def train_model(processed_dataset_id, epochs, project_name):
+def train_model(processed_dataset_name, epochs, project_name, queue_name):
     import argparse
 
     import matplotlib.pyplot as plt
@@ -23,16 +23,16 @@ def train_model(processed_dataset_id, epochs, project_name):
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.utils import to_categorical
 
-    task = Task.init(
+    task: Task = Task.init(
         project_name=project_name,
         task_name="Model Training",
         task_type=Task.TaskTypes.training,
         auto_connect_frameworks="keras",
     )
-    task.execute_remotely(queue_name="queue_name", exit_process=True)
+    task.execute_remotely(queue_name=queue_name, exit_process=True)
 
     # Access dataset
-    dataset = Dataset.get(dataset_id=processed_dataset_id)
+    dataset = Dataset.get(dataset_name=processed_dataset_name, dataset_project=project_name)
     dataset_path = dataset.get_local_copy()
 
     # Load the numpy arrays from the dataset
@@ -88,7 +88,7 @@ def train_model(processed_dataset_id, epochs, project_name):
         )
     ]
 
-    model.fit(
+    H = model.fit(
         train_images,
         train_labels,
         epochs=int(epochs),
@@ -115,14 +115,28 @@ if __name__ == "__main__":
         description="Train a CNN on CIFAR-10 and log with ClearML."
     )
     parser.add_argument(
-        "--processed_dataset_id",
+        "--processed_dataset_name",
         type=str,
-        required=True,
-        help="ClearML processed dataset id",
+        default="CIFAR-10 Preprocessed",
+        help="Name for the processed dataset",
     )
     parser.add_argument(
         "--epochs", type=int, default=10, help="Number of training epochs"
     )
+    parser.add_argument(
+        "--project_name",
+        # required=True,
+        help="ClearML Project name",
+        default="CIFAR-10 Project",
+    )
+    parser.add_argument(
+        "--queue_name",
+        # required=True,
+        help="ClearML Queue name",
+        default="gitarth_queue"
+    )
     args = parser.parse_args()
 
-    train_model(args.processed_dataset_id, args.epochs)
+    train_model(
+        args.processed_dataset_name, args.epochs, args.project_name, args.queue_name
+    )

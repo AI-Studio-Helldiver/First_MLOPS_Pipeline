@@ -49,7 +49,7 @@ def upload_cifar10_as_numpy(dataset_project, dataset_name, queue_name):
 
     # Create a new ClearML dataset
     raw_dataset = Dataset.create(
-        dataset_name=dataset_name, dataset_project=dataset_project
+        dataset_name=dataset_name, dataset_project=dataset_project, dataset_tags=['Raw', 'Numpy']
     )
 
     # Add the saved numpy files to the dataset

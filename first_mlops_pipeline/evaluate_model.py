@@ -33,7 +33,7 @@ def log_debug_images(task, images, true_labels, predictions, num_images=10):
         plt.close()
 
 
-def evaluate_model(model_id, processed_dataset_id, project_name):
+def evaluate_model(model_id, processed_dataset_name, project_name, queue_name):
     import argparse
 
     import matplotlib.pyplot as plt
@@ -49,7 +49,7 @@ def evaluate_model(model_id, processed_dataset_id, project_name):
         task_name="Model Evaluation",
         task_type=Task.TaskTypes.testing,
     )
-    task.execute_remotely(queue_name="queue_name", exit_process=True)
+    task.execute_remotely(queue_name=queue_name, exit_process=True)
 
     # Fetch and load the trained model
     model = Model(model_id=model_id)
@@ -57,7 +57,7 @@ def evaluate_model(model_id, processed_dataset_id, project_name):
     loaded_model = load_model(model_path)
 
     # Access dataset
-    dataset = Dataset.get(dataset_id=processed_dataset_id)
+    dataset = Dataset.get(dataset_name=processed_dataset_name,   dataset_project=project_name)
     dataset_path = dataset.get_local_copy()
 
     # Load the numpy arrays from the dataset
@@ -102,11 +102,25 @@ if __name__ == "__main__":
         help="ClearML model ID for the trained model",
     )
     parser.add_argument(
-        "--processed_dataset_id",
+        "--project_name",
+        # required=True,
+        help="ClearML Project name",
+        default="CIFAR-10 Project",
+    )
+    parser.add_argument(
+        "--queue_name",
+        # required=True,
+        help="ClearML Queue name",
+        default="gitarth_queue",
+    )
+    parser.add_argument(
+        "--processed_dataset_name",
         type=str,
-        required=True,
-        help="ClearML processed dataset id",
+        default="CIFAR-10 Preprocessed",
+        help="Name for the processed dataset",
     )
     args = parser.parse_args()
 
-    evaluate_model(args.model_id, args.processed_dataset_id)
+    evaluate_model(
+        args.model_id, args.processed_dataset_name, args.project_name, args.queue_name
+    )
