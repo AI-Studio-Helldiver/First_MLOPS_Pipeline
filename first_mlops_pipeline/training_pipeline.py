@@ -1,7 +1,7 @@
 from clearml import PipelineController, Task
 
-from first_mlops_pipeline.train_model import train_model
-from first_mlops_pipeline.evaluate_model import evaluate_model, log_debug_images
+from train_model import train_model
+from evaluate_model import evaluate_model, log_debug_images
 
 
 def create_cifar10_training_pipeline(
@@ -12,8 +12,8 @@ def create_cifar10_training_pipeline(
     queue_name: str
 ):
     from clearml import PipelineController, Task
-    from first_mlops_pipeline.train_model import train_model
-    from first_mlops_pipeline.evaluate_model import evaluate_model, log_debug_images
+    from train_model import train_model
+    from evaluate_model import evaluate_model, log_debug_images
 
     # Initialize a new pipeline controller task
     pipeline = PipelineController(

@@ -1,10 +1,10 @@
 from clearml import PipelineController, Task
 
-from first_mlops_pipeline.preprocess_upload_cifar10 import (
+from preprocess_upload_cifar10 import (
     preprocess_and_upload_cifar10,
     save_preprocessed_data,
 )
-from first_mlops_pipeline.upload_cifar_raw import (
+from upload_cifar_raw import (
     save_numpy_arrays,
     upload_cifar10_as_numpy,
 )
@@ -19,11 +19,11 @@ def create_cifar10_data_pipeline(
 ):
     from clearml import PipelineController, Task
 
-    from first_mlops_pipeline.preprocess_upload_cifar10 import (
+    from preprocess_upload_cifar10 import (
         preprocess_and_upload_cifar10,
         save_preprocessed_data,
     )
-    from first_mlops_pipeline.upload_cifar_raw import (
+    from upload_cifar_raw import (
         save_numpy_arrays,
         upload_cifar10_as_numpy,
     )
