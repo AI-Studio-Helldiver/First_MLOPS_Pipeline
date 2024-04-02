@@ -27,17 +27,12 @@ def upload_cifar10_as_numpy(dataset_project, dataset_name, queue_name):
     from clearml import Dataset, Task
     from tensorflow.keras.datasets import cifar10
 
-    ##### UNCOMMENT IF RUNNING AS A TASK #####
-    # task = Task.init(
-    #     project_name=dataset_project,
-    #     task_name="Dataset Upload",
-    #     task_type=Task.TaskTypes.data_processing,
-    # )
-    # task.execute_remotely(queue_name=queue_name, exit_process=True)
-    #############
-    ##### UNCOMMENT IF RUNNING AS A PIPELINE #####
-    task = Task.current_task()
-    #############
+    task = Task.init(
+        project_name=dataset_project,
+        task_name="Dataset Upload",
+        task_type=Task.TaskTypes.data_processing,
+    )
+    task.execute_remotely(queue_name=queue_name, exit_process=True)
 
     # Load CIFAR-10 data
     (train_images, train_labels), (test_images, test_labels) = cifar10.load_data()

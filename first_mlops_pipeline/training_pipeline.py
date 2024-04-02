@@ -70,7 +70,7 @@ def create_cifar10_training_pipeline(
     )
 
     # Start the pipeline
-    pipeline.start(queue="gitarth")
+    pipeline.start_locally(run_pipeline_steps_locally=True)
     print("CIFAR-10 training pipeline initiated. Check ClearML for progress.")
 
 

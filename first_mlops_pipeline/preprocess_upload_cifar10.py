@@ -24,17 +24,13 @@ def preprocess_and_upload_cifar10(
 
     import numpy as np
     from clearml import Dataset, Task
-    ##### UNCOMMENT IF RUNNING AS A TASK #####
-    # task = Task.init(
-    #     project_name=processed_dataset_project,
-    #     task_name="Dataset Preprocessing",
-    #     task_type=Task.TaskTypes.data_processing,
-    # )
-    # task.execute_remotely(queue_name=queue_name, exit_process=True)
-    #############
-    ##### UNCOMMENT IF RUNNING AS A PIPELINE #####
-    task = Task.current_task()
-    #############
+    task = Task.init(
+        project_name=processed_dataset_project,
+        task_name="Dataset Preprocessing",
+        task_type=Task.TaskTypes.data_processing,
+    )
+    task.execute_remotely(queue_name=queue_name, exit_process=True)
+
     raw_dataset = Dataset.get(dataset_id=raw_dataset_id)
     raw_data_path = raw_dataset.get_local_copy()
 

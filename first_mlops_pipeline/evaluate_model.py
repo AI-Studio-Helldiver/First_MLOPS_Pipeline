@@ -43,19 +43,14 @@ def evaluate_model(model_id, processed_dataset_name, project_name, queue_name):
     from sklearn.metrics import confusion_matrix
     from tensorflow.keras.models import load_model
     from tensorflow.keras.utils import to_categorical
+    
+    task = Task.init(
+        project_name=project_name,
+        task_name="Model Evaluation",
+        task_type=Task.TaskTypes.testing,
+    )
+    task.execute_remotely(queue_name=queue_name, exit_process=True) 
 
-    ##### UNCOMMENT IF RUNNING AS A TASK #####
-    # task = Task.init(
-    #     project_name=project_name,
-    #     task_name="Model Evaluation",
-    #     task_type=Task.TaskTypes.testing,
-    # )
-    # task.execute_remotely(queue_name=queue_name, exit_process=True) ## Uncomment when running as a single task, not as a pipeline
-    #############
-
-    ##### UNCOMMENT IF RUNNING AS A PIPELINE #####
-    task = Task.current_task()
-    #############
 
     # Fetch and load the trained model
     model = Model(model_id=model_id)

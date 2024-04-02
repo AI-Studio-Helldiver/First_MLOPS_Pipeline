@@ -82,7 +82,7 @@ def create_cifar10_data_pipeline(
     )
 
     # Start the pipeline
-    pipeline.start(queue=queue_name)
+    pipeline.start_locally(run_pipeline_steps_locally=True)
     print("CIFAR-10 pipeline initiated. Check ClearML for progress.")
 
 
