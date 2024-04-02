@@ -1,7 +1,7 @@
 from clearml import PipelineController, Task
 
-from train_model import train_model
-from evaluate_model import evaluate_model, log_debug_images
+from first_mlops_pipeline.train_model import train_model
+from first_mlops_pipeline.evaluate_model import evaluate_model, log_debug_images
 
 
 def create_cifar10_training_pipeline(
@@ -12,8 +12,8 @@ def create_cifar10_training_pipeline(
     queue_name: str
 ):
     from clearml import PipelineController, Task
-    from train_model import train_model
-    from evaluate_model import evaluate_model, log_debug_images
+    from first_mlops_pipeline.train_model import train_model
+    from first_mlops_pipeline.evaluate_model import evaluate_model, log_debug_images
 
     # Initialize a new pipeline controller task
     pipeline = PipelineController(
@@ -50,9 +50,7 @@ def create_cifar10_training_pipeline(
         task_type=Task.TaskTypes.training,
         task_name="Train Model",
         function_return=["model_id"],
-        helper_functions=[],
         cache_executed_step=False,
-        execution_queue=queue_name,
     )
 
     # Step 2: Evaluate Model
@@ -69,11 +67,10 @@ def create_cifar10_training_pipeline(
         task_name="Evaluate Model",
         helper_functions=[log_debug_images],
         cache_executed_step=False,
-        execution_queue=queue_name,
     )
 
     # Start the pipeline
-    pipeline.start(queue=queue_name)
+    pipeline.start(queue="gitarth")
     print("CIFAR-10 training pipeline initiated. Check ClearML for progress.")
 
 

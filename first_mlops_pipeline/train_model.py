@@ -30,7 +30,7 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
         task_type=Task.TaskTypes.training,
         auto_connect_frameworks="keras",
     )
-    task.execute_remotely(queue_name=queue_name, exit_process=True)
+    # task.execute_remotely(queue_name=queue_name, exit_process=True)  ## Uncomment when running as a single task, not as a pipeline
 
     # Access dataset
     dataset = Dataset.get(dataset_name=processed_dataset_name, dataset_project=project_name)
@@ -139,5 +139,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     train_model(
-        args.processed_dataset_name, args.epochs, args.project_name, args.queue_name
+        args.processed_dataset_name,
+        args.epochs,
+        args.project_name,
+        args.queue_name
     )

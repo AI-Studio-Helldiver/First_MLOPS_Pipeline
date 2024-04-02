@@ -49,7 +49,7 @@ def evaluate_model(model_id, processed_dataset_name, project_name, queue_name):
         task_name="Model Evaluation",
         task_type=Task.TaskTypes.testing,
     )
-    task.execute_remotely(queue_name=queue_name, exit_process=True)
+    # task.execute_remotely(queue_name=queue_name, exit_process=True) ## Uncomment when running as a single task, not as a pipeline
 
     # Fetch and load the trained model
     model = Model(model_id=model_id)
@@ -122,5 +122,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     evaluate_model(
-        args.model_id, args.processed_dataset_name, args.project_name, args.queue_name
+        args.model_id, 
+        args.processed_dataset_name, 
+        args.project_name, 
+        args.queue_name
     )
