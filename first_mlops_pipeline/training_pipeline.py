@@ -58,7 +58,7 @@ def create_cifar10_training_pipeline(
         name="evaluate_model",
         function=evaluate_model,
         function_kwargs={
-            "raw_dataset_id": "${train_model.model_id}",
+            "model_id": "${train_model.model_id}",
             "project_name": "${pipeline.project_name}",
             "processed_dataset_name": "${pipeline.processed_dataset_name}",
             "queue_name": "${pipeline.queue_name}",
