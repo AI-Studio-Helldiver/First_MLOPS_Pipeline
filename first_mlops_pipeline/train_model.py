@@ -24,13 +24,19 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.utils import to_categorical
 
-    task: Task = Task.init(
-        project_name=project_name,
-        task_name="Model Training",
-        task_type=Task.TaskTypes.training,
-        auto_connect_frameworks="keras",
-    )
+    ##### UNCOMMENT IF RUNNING AS A TASK #####
+    # task: Task = Task.init(
+    #     project_name=project_name,
+    #     task_name="Model Training",
+    #     task_type=Task.TaskTypes.training,
+    #     auto_connect_frameworks="keras",
+    # )
     # task.execute_remotely(queue_name=queue_name, exit_process=True)  ## Uncomment when running as a single task, not as a pipeline
+    #############
+    
+    ##### UNCOMMENT IF RUNNING AS A PIPELINE #####
+    task = Task.current_task()
+    #############
 
     # Access dataset
     dataset = Dataset.get(dataset_name=processed_dataset_name, dataset_project=project_name)
