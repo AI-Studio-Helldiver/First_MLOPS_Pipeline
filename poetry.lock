@@ -157,12 +157,12 @@ files = [
 
 [[package]]
 name = "clearml"
-version = "1.15.0"
+version = "1.14.4"
 description = "ClearML - Auto-Magical Experiment Manager, Version Control, and MLOps for AI"
 optional = false
 python-versions = "*"
 files = [
-    {file = "clearml-1.15.0-py2.py3-none-any.whl", hash = "sha256:af7c0d8ebbc238e3cb87797fd0a3524a14ce6f7c715959facdbed7c74fafe4e2"},
+    {file = "clearml-1.14.4-py2.py3-none-any.whl", hash = "sha256:3c38b2d765a387701ff3582ac00311d921af2dc6a4040569c97df2d8141ff99c"},
 ]
 
 [package.dependencies]
@@ -2088,4 +2088,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9, <3.12"
-content-hash = "dc92df5d117f1e8ac17561964a55f383346668812392337f3f928b422da0645a"
+content-hash = "328c27a44f69ffb66653d66548059fd604ad48aa52f3ab5bf2439b418432f55e"
