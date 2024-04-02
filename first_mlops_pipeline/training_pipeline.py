@@ -26,7 +26,7 @@ def create_cifar10_training_pipeline(
     )
 
     # Add pipeline-level parameters with defaults from function arguments
-    pipeline.add_parameter(name="dataset_project", default=dataset_project)
+    pipeline.add_parameter(name="project_name", default=dataset_project)
     pipeline.add_parameter(
         name="epochs", default=epochs
     )
@@ -52,6 +52,7 @@ def create_cifar10_training_pipeline(
         function_return=["model_id"],
         helper_functions=[],
         cache_executed_step=False,
+        execution_queue=queue_name,
     )
 
     # Step 2: Evaluate Model
@@ -68,6 +69,7 @@ def create_cifar10_training_pipeline(
         task_name="Evaluate Model",
         helper_functions=[log_debug_images],
         cache_executed_step=False,
+        execution_queue=queue_name,
     )
 
     # Start the pipeline
