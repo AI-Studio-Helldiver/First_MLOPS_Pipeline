@@ -5,15 +5,16 @@ from first_mlops_pipeline.evaluate_model import evaluate_model, log_debug_images
 
 
 def create_cifar10_training_pipeline(
-    pipeline_name: str = "CIFAR-10 Training Pipeline",
-    dataset_project: str = "CIFAR-10 Project",
-    processed_dataset_name: str = "CIFAR-10 Preprocessed",
-    epochs: int = 10,
-    queue_name: str = "gitarth"
+    pipeline_name,
+    dataset_project: str,
+    processed_dataset_name: str,
+    epochs: int,
+    queue_name: str
 ):
     from clearml import PipelineController, Task
     from first_mlops_pipeline.train_model import train_model
     from first_mlops_pipeline.evaluate_model import evaluate_model, log_debug_images
+
     # Initialize a new pipeline controller task
     pipeline = PipelineController(
         name=pipeline_name,
@@ -79,31 +80,28 @@ if __name__ == "__main__":
 
     # Create the parser
     parser = argparse.ArgumentParser(
-        description="Run CIFAR-10 Data Pipeline"
+        description="Run CIFAR-10 Training Pipeline"
     )
     parser.add_argument(
         "--pipeline_name",
         type=str,
-        default="CIFAR-10 Data Pipeline",
+        default="CIFAR-10 Training Pipeline",
         help="Name of the pipeline",
     )
     parser.add_argument(
-        "--dataset_project",
+        "--project_name",
         type=str,
         default="CIFAR-10 Project",
         help="Project name for datasets",
-    )
-    parser.add_argument(
-        "--raw_dataset_name",
-        type=str,
-        default="CIFAR-10 Raw",
-        help="Name for the raw dataset",
     )
     parser.add_argument(
         "--processed_dataset_name",
         type=str,
         default="CIFAR-10 Preprocessed",
         help="Name for the processed dataset",
+    )
+    parser.add_argument(
+        "--epochs", type=int, default=10, help="Number of training epochs"
     )
     parser.add_argument(
         "--queue_name",
@@ -117,8 +115,8 @@ if __name__ == "__main__":
     # Call the function with the parsed arguments
     create_cifar10_training_pipeline(
         pipeline_name=args.pipeline_name,
-        dataset_project=args.dataset_project,
+        dataset_project=args.project_name,
         processed_dataset_name=args.processed_dataset_name,
-        epochs=10,
+        epochs=args.epochs,
         queue_name=args.queue_name,
     )
