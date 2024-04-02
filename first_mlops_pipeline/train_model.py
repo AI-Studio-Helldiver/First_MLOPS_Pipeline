@@ -4,6 +4,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 from clearml import Dataset, OutputModel, Task
+import tensorflow
 from tensorflow.keras.callbacks import Callback, LambdaCallback
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.layers import Conv2D, Dense, Flatten, MaxPooling2D
@@ -13,7 +14,7 @@ from tensorflow.keras.utils import to_categorical
 
 def train_model(processed_dataset_name, epochs, project_name, queue_name):
     import argparse
-
+    import tensorflow
     import matplotlib.pyplot as plt
     import numpy as np
     from clearml import Dataset, OutputModel, Task
@@ -133,7 +134,7 @@ if __name__ == "__main__":
         "--queue_name",
         # required=True,
         help="ClearML Queue name",
-        default="gitarth_queue"
+        default="gitarth"
     )
     args = parser.parse_args()
 
