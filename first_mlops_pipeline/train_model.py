@@ -88,7 +88,8 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
             ]
         )
     ]
-
+    logger.report_text(model.summary())
+    print(model.summary())
     H = model.fit(
         train_images,
         train_labels,
@@ -98,16 +99,16 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
     )
 
     # Save and upload the model to ClearML
-    model_file_name = "model.h5"
-    model.save(model_file_name)
+    model_file_name = "serving_model.h5"
+    model.save(model_file_name, include_optimizer=False)
     output_model = OutputModel(task=task)
     output_model.update_weights(
         model_file_name, upload_uri="https://files.clear.ml"
     )  # Upload the model weights to ClearML
     output_model.publish()  # Make sure the model is accessible
-    task.upload_artifact("trained_model", artifact_object=model_file_name)
-    if os.path.exists("model.h5"):
-        os.remove("model.h5")
+    task.upload_artifact("trained_model", artifact_object=f'./{model_file_name}')
+    if os.path.exists(f"./{model_file_name}"):
+        os.remove(f"./{model_file_name}")
     return output_model.id
 
 

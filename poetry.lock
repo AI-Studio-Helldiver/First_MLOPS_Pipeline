@@ -188,6 +188,19 @@ gs = ["google-cloud-storage (>=1.13.2)"]
 s3 = ["boto3 (>=1.9)"]
 
 [[package]]
+name = "clearml-serving"
+version = "1.3.0"
+description = "clearml-serving - Model-Serving Orchestration and Repository Solution"
+optional = false
+python-versions = "*"
+files = [
+    {file = "clearml_serving-1.3.0-py3-none-any.whl", hash = "sha256:e70c888efb4a99b716e02380d12ec27d01b90b37a57d4fe5baf51ac49b88128f"},
+]
+
+[package.dependencies]
+clearml = ">=1.3.1"
+
+[[package]]
 name = "contourpy"
 version = "1.2.0"
 description = "Python library for calculating contours of 2D quadrilateral grids"
@@ -2088,4 +2101,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9, <3.12"
-content-hash = "328c27a44f69ffb66653d66548059fd604ad48aa52f3ab5bf2439b418432f55e"
+content-hash = "81608c524bda5c522f6cd49b6fea205a0ffd981383005a806452cfd0d0db4692"
