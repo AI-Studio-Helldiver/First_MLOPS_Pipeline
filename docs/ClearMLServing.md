@@ -1,9 +1,11 @@
+
 # Train and Deploy Keras model with Nvidia Triton Engine (x86_64)
 More details are here - easy to follow with given code: 
 - https://clear.ml/docs/latest/docs/clearml_serving/clearml_serving_setup
 - https://clear.ml/docs/latest/docs/clearml_serving/clearml_serving_tutorial/
 - https://github.com/allegroai/clearml-serving/blob/main/examples/keras/readme.md
 
+**_IMPORTANT:_** The Triton works only on x86_64 architecture, meaning intel/AMD processors. This won't work on a macbook with silicon chips.
 
 ## First setup clearml-serving in your local device or server:
 - Follow the steps in [serving_readme.md](https://github.com/GitarthVaishnav/First_MLOPS_Pipeline/blob/development/first_mlops_pipeline/serving/serving_readme.md)  (Docker takes fair amount of time)
@@ -41,4 +43,3 @@ Prerequisites, Keras/Tensorflow models require Triton engine support, please use
 This includes adding/removing endpoints, adding canary model routing etc.
 by default new endpoints/models will be automatically updated after 1 minute
 
-> **_IMPORTANT:_** The Triton works only on x86_64 architecture, meaning intel/AMD processors. This won't work on a macbook with silicon chips.
