@@ -15,6 +15,7 @@ def hpo(base_task_id, queue_name):
     # Define Hyperparameter Space
     param_ranges = [
         UniformParameterRange("epochs", min_value=5, max_value=50, step_size=5),
+        ### you could make anything like batch_size, number of nodes, loss function, a command line argument in base task and use it as a parameter to be optimised. ###
     ]
 
     # Setup HyperParameter Optimizer
