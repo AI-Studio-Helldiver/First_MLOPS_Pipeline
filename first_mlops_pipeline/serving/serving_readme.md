@@ -10,9 +10,13 @@
 
 1. Setup your [**ClearML Server**](https://github.com/allegroai/clearml-server) or use the [Free tier Hosting](https://app.clear.ml)
 2. Setup local access (if you haven't already), see instructions [here](https://clear.ml/docs/latest/docs/getting_started/ds/ds_first_steps#install-clearml)
-3. Install clearml-serving CLI: 
+3. Install clearml-serving CLI in the venv: 
 ```bash
 pip3 install clearml-serving
+```
+OR if using poetry
+```bash
+poetry add clearml-serving
 ```
 4. Create the Serving Service Controller
   - `clearml-serving create --name "serving example"`
