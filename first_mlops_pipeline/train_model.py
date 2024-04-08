@@ -7,7 +7,7 @@ from clearml import Dataset, OutputModel, Task
 import tensorflow
 from tensorflow.keras.callbacks import Callback, LambdaCallback
 from tensorflow.keras.datasets import cifar10
-from tensorflow.keras.layers import Conv2D, Dense, Flatten, MaxPooling2D
+from tensorflow.keras.layers import Conv2D, Dense, Flatten, MaxPooling2D, Input, Activation
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
 
@@ -20,7 +20,14 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
     from clearml import Dataset, OutputModel, Task
     from tensorflow.keras.callbacks import Callback, LambdaCallback
     from tensorflow.keras.datasets import cifar10
-    from tensorflow.keras.layers import Conv2D, Dense, Flatten, MaxPooling2D
+    from tensorflow.keras.layers import (
+        Conv2D,
+        Dense,
+        Flatten,
+        MaxPooling2D,
+        Input,
+        Activation,
+    )
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.utils import to_categorical
 
@@ -48,14 +55,16 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
 
     model = Sequential(
         [
-            Conv2D(32, (3, 3), activation="relu", input_shape=(32, 32, 3)),
+            Input(shape=(32, 32, 3), name="input"),
+            Conv2D(32, (3, 3), activation="relu"),
             MaxPooling2D((2, 2)),
             Conv2D(64, (3, 3), activation="relu"),
             MaxPooling2D((2, 2)),
             Conv2D(64, (3, 3), activation="relu"),
             Flatten(),
             Dense(64, activation="relu"),
-            Dense(10, activation="softmax"),
+            Dense(10),  # Remove the activation="softmax" from here
+            Activation("softmax", name="output"),  # Add the softmax activation as a separate layer
         ]
     )
 
@@ -106,7 +115,6 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
         model_file_name, upload_uri="https://files.clear.ml"
     )  # Upload the model weights to ClearML
     output_model.publish()  # Make sure the model is accessible
-    task.upload_artifact("trained_model", artifact_object=f'./{model_file_name}')
     if os.path.exists(f"./{model_file_name}"):
         os.remove(f"./{model_file_name}")
     return output_model.id
@@ -123,7 +131,7 @@ if __name__ == "__main__":
         help="Name for the processed dataset",
     )
     parser.add_argument(
-        "--epochs", type=int, default=10, help="Number of training epochs"
+        "--epochs", type=int, default=5, help="Number of training epochs"
     )
     parser.add_argument(
         "--project_name",
