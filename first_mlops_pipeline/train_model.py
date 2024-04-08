@@ -95,9 +95,9 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
     score = model.evaluate(test_images, test_labels, verbose=0)
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
-    logger.report_scalar(title='evaluate', series='score', value=score[0], iteration=args['epochs'])
+    logger.report_scalar(title='evaluate', series='score', value=score[0], iteration=epochs)
     logger.report_scalar(
-        title="evaluate", series="accuracy", value=score[1], iteration=args["epochs"]
+        title="evaluate", series="accuracy", value=score[1], iteration=epochs
     )
     # Save and upload the model to ClearML
     model_file_name = "serving_model.h5"
