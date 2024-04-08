@@ -1,16 +1,17 @@
 import argparse
 import os
+import tempfile
 
 import matplotlib.pyplot as plt
 import numpy as np
 from clearml import Dataset, OutputModel, Task
 import tensorflow
-from tensorflow.keras.callbacks import Callback, LambdaCallback
+from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.layers import Conv2D, Dense, Flatten, MaxPooling2D, Input, Activation
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
-
+from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard
 
 def train_model(processed_dataset_name, epochs, project_name, queue_name):
     import argparse
@@ -18,7 +19,7 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
     import matplotlib.pyplot as plt
     import numpy as np
     from clearml import Dataset, OutputModel, Task
-    from tensorflow.keras.callbacks import Callback, LambdaCallback
+    from tensorflow.keras.callbacks import Callback
     from tensorflow.keras.datasets import cifar10
     from tensorflow.keras.layers import (
         Conv2D,
@@ -30,6 +31,7 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
     )
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.utils import to_categorical
+    from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard
 
     task: Task = Task.init(
         project_name=project_name,
@@ -74,30 +76,14 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
 
     # Inside your training function, after initializing your task:
     logger = task.get_logger()
-
+    output_folder = os.path.join(tempfile.gettempdir(), 'cifar10_example')
     # Manual logging within model.fit() callback
-    callbacks = [
-        LambdaCallback(
-            on_epoch_end=lambda epoch, logs: [
-                logger.report_scalar(
-                    "loss", "train", iteration=epoch, value=logs["loss"]
-                ),
-                logger.report_scalar(
-                    "accuracy", "train", iteration=epoch, value=logs["accuracy"]
-                ),
-                logger.report_scalar(
-                    "val_loss", "validation", iteration=epoch, value=logs["val_loss"]
-                ),
-                logger.report_scalar(
-                    "val_accuracy",
-                    "validation",
-                    iteration=epoch,
-                    value=logs["val_accuracy"],
-                ),
-            ]
-        )
-    ]
+    callbacks = []
+    board = TensorBoard(log_dir=output_folder, write_images=False)
+    callbacks.append(board)
+    model_store = ModelCheckpoint(filepath=os.path.join(output_folder, "weight.hdf5"))
     logger.report_text(model.summary())
+    callbacks.append(model_store)
     print(model.summary())
     H = model.fit(
         train_images,
@@ -106,17 +92,24 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
         validation_data=(test_images, test_labels),
         callbacks=callbacks,
     )
-
+    score = model.evaluate(test_images, test_labels, verbose=0)
+    print('Test score:', score[0])
+    print('Test accuracy:', score[1])
+    logger.report_scalar(title='evaluate', series='score', value=score[0], iteration=args['epochs'])
+    logger.report_scalar(
+        title="evaluate", series="accuracy", value=score[1], iteration=args["epochs"]
+    )
     # Save and upload the model to ClearML
     model_file_name = "serving_model.h5"
-    model.save(model_file_name, include_optimizer=False)
+    model_file_path = os.path.join(output_folder, model_file_name)
+    model.save(model_file_path, include_optimizer=False)
     output_model = OutputModel(task=task)
     output_model.update_weights(
-        model_file_name, upload_uri="https://files.clear.ml"
+        model_file_path, upload_uri="https://files.clear.ml"
     )  # Upload the model weights to ClearML
     output_model.publish()  # Make sure the model is accessible
-    if os.path.exists(f"./{model_file_name}"):
-        os.remove(f"./{model_file_name}")
+    if os.path.exists(f"{model_file_path}"):
+        os.remove(f"{model_file_path}")
     return output_model.id
 
 

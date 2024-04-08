@@ -1,4 +1,9 @@
-# Train and Deploy Keras model with Nvidia Triton Engine
+# Train and Deploy Keras model with Nvidia Triton Engine (x86_64)
+More details are here - easy to follow with given code: 
+- https://clear.ml/docs/latest/docs/clearml_serving/clearml_serving_setup
+- https://clear.ml/docs/latest/docs/clearml_serving/clearml_serving_tutorial/
+- https://github.com/allegroai/clearml-serving/blob/main/examples/keras/readme.md
+
 
 ## First setup clearml-serving in your local device or server:
 - Follow the steps in [serving_readme.md](https://github.com/GitarthVaishnav/First_MLOPS_Pipeline/blob/development/first_mlops_pipeline/serving/serving_readme.md)  (Docker takes fair amount of time)
