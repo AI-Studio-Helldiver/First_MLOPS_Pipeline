@@ -145,6 +145,6 @@ if __name__ == "__main__":
         args.processed_dataset_name,
         args.epochs,
         args.project_name,
-        args.queue_name
+        args.queue_name,
         args=args
     )
