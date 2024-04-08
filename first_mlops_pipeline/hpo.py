@@ -26,7 +26,7 @@ def hpo(base_task_id, queue_name):
         objective_metric_sign="max",
         optimizer_class=GridSearch,
         execution_queue=queue_name,
-        max_number_of_concurrent_tasks=1,
+        max_number_of_concurrent_tasks=2,
     )
 
     # Start the Optimization
