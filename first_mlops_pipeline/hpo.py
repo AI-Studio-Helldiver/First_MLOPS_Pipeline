@@ -21,8 +21,8 @@ def hpo(base_task_id, queue_name):
     optimizer = HyperParameterOptimizer(
         base_task_id=base_task_id,
         hyper_parameters=param_ranges,
-        objective_metric_title="val_acc",
-        objective_metric_series="val_acc",
+        objective_metric_title="epoch_accuracy",
+        objective_metric_series="epoch_accuracy",
         objective_metric_sign="max",
         optimizer_class=GridSearch,
         execution_queue=queue_name,

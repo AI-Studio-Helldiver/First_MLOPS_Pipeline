@@ -81,7 +81,7 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name):
     callbacks = []
     board = TensorBoard(log_dir=output_folder, write_images=False)
     callbacks.append(board)
-    model_store = ModelCheckpoint(filepath=os.path.join(output_folder, "weight.h5"))
+    model_store = ModelCheckpoint(filepath=os.path.join(output_folder, "weight.keras"))
     logger.report_text(model.summary())
     callbacks.append(model_store)
     print(model.summary())
