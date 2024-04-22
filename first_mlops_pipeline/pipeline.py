@@ -59,7 +59,7 @@ def create_cifar10_pipeline(
         name="upload_cifar10_raw_data",
         function=upload_cifar10_as_numpy,
         function_kwargs={
-            "project_name": "${pipeline.project_name}",
+            "dataset_project": "${pipeline.project_name}",
             "dataset_name": "${pipeline.raw_dataset_name}",
             "queue_name": "${pipeline.queue_name}",
         },
@@ -76,7 +76,7 @@ def create_cifar10_pipeline(
         function=preprocess_and_upload_cifar10,
         function_kwargs={
             "raw_dataset_id": "${upload_cifar10_raw_data.raw_dataset_id}",
-            "processed_project_name": "${pipeline.project_name}",
+            "processed_dataset_project": "${pipeline.project_name}",
             "processed_dataset_name": "${pipeline.processed_dataset_name}",
             "queue_name": "${pipeline.queue_name}",
         },
