@@ -20,6 +20,7 @@ def create_cifar10_pipeline(
     raw_dataset_name: str = "CIFAR-10 Raw",
     processed_dataset_name: str = "CIFAR-10 Preprocessed",
     queue_name: str = "gitarth",
+    args = None,
 ):
     from clearml import PipelineController, Task
 
@@ -85,6 +86,7 @@ def create_cifar10_pipeline(
         function_return=["processed_dataset_id"],
         helper_functions=[save_preprocessed_data],
         cache_executed_step=False,
+        parents=["upload_cifar10_raw_data"],
     )
 
     # Step 3: Train Model and save to reigstry
@@ -96,11 +98,13 @@ def create_cifar10_pipeline(
             "epochs": "${pipeline.epochs}",
             "project_name": "${pipeline.project_name}",
             "queue_name": "${pipeline.queue_name}",
+            "args": args,
         },
         task_type=Task.TaskTypes.training,
         task_name="Train Model",
         function_return=["model_id", "training_task_id"],
         cache_executed_step=False,
+        parents=["preprocess_cifar10_data"],
     )
 
     # Step 4: Evaluate Model
@@ -117,6 +121,7 @@ def create_cifar10_pipeline(
         task_name="Evaluate Model",
         helper_functions=[log_debug_images],
         cache_executed_step=False,
+        parents=["train_model"],
     )
 
     # Step 5: HPO
@@ -133,6 +138,7 @@ def create_cifar10_pipeline(
         helper_functions=[job_complete_callback],
         cache_executed_step=False,
         function_return=["best_training_task_id"],
+        parents=["evaluate_model", "train_model"],
     )
 
     ### You may add further evaluation, or model related tasks after finding the best model from HPO using the task.id or model.id (this depends on how you program hpo) as hpo returns this.

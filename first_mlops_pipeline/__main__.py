@@ -30,4 +30,5 @@ if __name__ == "__main__":
         raw_dataset_name=args.raw_dataset_name,
         processed_dataset_name=args.processed_dataset_name,
         queue_name = args.queue_name,
+        args=args,
     )
