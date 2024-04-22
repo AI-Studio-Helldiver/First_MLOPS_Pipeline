@@ -25,7 +25,7 @@ The script accepts the following parameters, which you can specify when running 
 To execute the pipeline, use the following command:
 
 ```bash
-python -m first_mlops_pipeline --epochs 20 --pipeline_name "CIFAR-10 Full Pipeline" --project_name "CIFAR-10 ML Project" --raw_dataset_name "CIFAR-10 Raw" --processed_dataset_name "CIFAR-10 Preprocessed"
+python -m first_mlops_pipeline --epochs 20 --pipeline_name "CIFAR-10 Full Pipeline" --project_name "CIFAR-10 Project" --raw_dataset_name "CIFAR-10 Raw" --processed_dataset_name "CIFAR-10 Preprocessed"
 ```
 OR
 ```bash
