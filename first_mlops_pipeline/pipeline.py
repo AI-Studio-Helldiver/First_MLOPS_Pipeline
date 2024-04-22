@@ -136,7 +136,7 @@ def create_cifar10_pipeline(
     ### You may add further evaluation, or model related tasks after finding the best model from HPO using the task.id or model.id (this depends on how you program hpo) as hpo returns this.
 
     # Start the pipeline
-    pipeline.start_locally()
+    pipeline.start_locally(run_pipeline_steps_locally=True)
     print("CIFAR-10 pipeline initiated. Check ClearML for progress.")
     
     #### Pipeline Running Instructions ####
