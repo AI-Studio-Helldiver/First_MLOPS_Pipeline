@@ -45,7 +45,7 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name, args):
     # Access dataset
     dataset = Dataset.get(dataset_name=processed_dataset_name, dataset_project=project_name)
     dataset_path = dataset.get_local_copy()
-
+    print("loading images")
     # Load the numpy arrays from the dataset
     train_images = np.load(f"{dataset_path}/train_images_preprocessed.npy")
     train_labels = np.load(f"{dataset_path}/train_labels_preprocessed.npy")
@@ -55,7 +55,7 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name, args):
     train_labels, test_labels = to_categorical(train_labels), to_categorical(
         test_labels
     )
-
+    print("model")
     model = Sequential(
         [
             Input(shape=(32, 32, 3), name="input"),
@@ -70,7 +70,7 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name, args):
             Activation("softmax", name="output"),  # Add the softmax activation as a separate layer
         ]
     )
-
+    print("compile model")
     model.compile(
         optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"]
     )
@@ -86,6 +86,7 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name, args):
     logger.report_text(model.summary())
     callbacks.append(model_store)
     print(model.summary())
+    print("train model")
     H = model.fit(
         train_images,
         train_labels,
