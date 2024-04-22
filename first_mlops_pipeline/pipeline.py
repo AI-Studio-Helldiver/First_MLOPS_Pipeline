@@ -1,6 +1,7 @@
 from clearml import PipelineController, Task
 
 from first_mlops_pipeline.evaluate_model import evaluate_model, log_debug_images
+from first_mlops_pipeline.hpo import hpo, job_complete_callback
 from first_mlops_pipeline.preprocess_upload_cifar10 import (
     preprocess_and_upload_cifar10,
     save_preprocessed_data,
@@ -22,6 +23,7 @@ def create_cifar10_pipeline(
     from clearml import PipelineController, Task
 
     from first_mlops_pipeline.evaluate_model import evaluate_model, log_debug_images
+    from first_mlops_pipeline.hpo import hpo, job_complete_callback
     from first_mlops_pipeline.preprocess_upload_cifar10 import (
         preprocess_and_upload_cifar10,
         save_preprocessed_data,
@@ -95,7 +97,7 @@ def create_cifar10_pipeline(
         },
         task_type=Task.TaskTypes.training,
         task_name="Train Model",
-        function_return=["model_id"],
+        function_return=["model_id", "training_task_id"],
         cache_executed_step=False,
     )
 
@@ -115,6 +117,27 @@ def create_cifar10_pipeline(
         cache_executed_step=False,
     )
 
+    # Step 5: HPO
+    pipeline.add_function_step(
+        name="hpo",
+        function=hpo,
+        function_kwargs={
+            "base_task_id": "${train_model.training_task_id}",
+            "queue_name": "${pipeline.queue_name}",
+            # add more params for hpo...
+        },
+        task_type=Task.TaskTypes.optimizer,
+        task_name="HPO",
+        helper_functions=[job_complete_callback],
+        cache_executed_step=False,
+        function_return=["best_training_task_id"],
+    )
+
+    ### You may add further evaluation, or model related tasks after finding the best model from HPO using the task.id or model.id (this depends on how you program hpo) as hpo returns this.
+
     # Start the pipeline
     pipeline.start_locally()
     print("CIFAR-10 pipeline initiated. Check ClearML for progress.")
+    
+    #### Pipeline Running Instructions ####
+    # - Pipeline needs to have 2 queues, one is services queue - the one which orchestrates (it runs in services mode), and second is execution queue, which executes the tasks.

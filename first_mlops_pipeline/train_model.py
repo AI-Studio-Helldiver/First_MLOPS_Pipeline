@@ -111,7 +111,7 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name, args):
     output_model.publish()  # Make sure the model is accessible
     if os.path.exists(f"{model_file_path}"):
         os.remove(f"{model_file_path}")
-    return output_model.id
+    return output_model.id, task.id
 
 
 if __name__ == "__main__":
