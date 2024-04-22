@@ -10,6 +10,12 @@ if __name__ == "__main__":
     parser.add_argument('--project_name', type=str, default="CIFAR-10 Project", help='Project name for datasets')
     parser.add_argument('--raw_dataset_name', type=str, default="CIFAR-10 Raw", help='Name for the raw dataset')
     parser.add_argument('--processed_dataset_name', type=str, default="CIFAR-10 Preprocessed", help='Name for the processed dataset')
+    parser.add_argument(
+        "--queue_name",
+        type=str,
+        default="gitarth",
+        help="Name for the queue",
+    )
     # Parse the arguments
     args = parser.parse_args()
 
@@ -23,4 +29,5 @@ if __name__ == "__main__":
         project_name=args.project_name,
         raw_dataset_name=args.raw_dataset_name,
         processed_dataset_name=args.processed_dataset_name,
+        queue_name = args.queue_name,
     )

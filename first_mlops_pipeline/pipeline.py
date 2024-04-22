@@ -19,6 +19,7 @@ def create_cifar10_pipeline(
     project_name: str = "CIFAR-10 Project",
     raw_dataset_name: str = "CIFAR-10 Raw",
     processed_dataset_name: str = "CIFAR-10 Preprocessed",
+    queue_name: str = "gitarth",
 ):
     from clearml import PipelineController, Task
 
@@ -51,6 +52,7 @@ def create_cifar10_pipeline(
         name="processed_dataset_name", default=processed_dataset_name
     )
     pipeline.add_parameter(name="epochs", default=epochs)
+    pipeline.add_parameter(name="queue_name", default=queue_name)
 
     # Step 1: Upload CIFAR-10 Raw Data
     pipeline.add_function_step(
@@ -138,6 +140,6 @@ def create_cifar10_pipeline(
     # Start the pipeline
     pipeline.start_locally(run_pipeline_steps_locally=True)
     print("CIFAR-10 pipeline initiated. Check ClearML for progress.")
-    
+
     #### Pipeline Running Instructions ####
     # - Pipeline needs to have 2 queues, one is services queue - the one which orchestrates (it runs in services mode), and second is execution queue, which executes the tasks.
