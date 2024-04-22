@@ -13,7 +13,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard
 
-def train_model(processed_dataset_name, epochs, project_name, queue_name, args):
+def train_model(processed_dataset_name, epochs, project_name, queue_name, args=None):
     import argparse
     import tensorflow
     import matplotlib.pyplot as plt
@@ -39,8 +39,8 @@ def train_model(processed_dataset_name, epochs, project_name, queue_name, args):
         task_type=Task.TaskTypes.training,
         auto_connect_frameworks="keras",
     )
-    task.connect(args)
-    task.execute_remotely(queue_name=queue_name, exit_process=True) 
+    # task.connect(args) # uncomment and run before running hpo
+    # task.execute_remotely(queue_name=queue_name, exit_process=True) # uncomment to run in queue
 
     # Access dataset
     dataset = Dataset.get(dataset_name=processed_dataset_name, dataset_project=project_name)

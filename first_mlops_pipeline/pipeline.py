@@ -98,13 +98,13 @@ def create_cifar10_pipeline(
             "epochs": "${pipeline.epochs}",
             "project_name": "${pipeline.project_name}",
             "queue_name": "${pipeline.queue_name}",
-            "args": args,
+            "args": None,
         },
         task_type=Task.TaskTypes.training,
         task_name="Train Model",
         function_return=["model_id", "training_task_id"],
         cache_executed_step=False,
-        parents=["preprocess_cifar10_data"],
+        # parents=["preprocess_cifar10_data"],
     )
 
     # Step 4: Evaluate Model
@@ -124,22 +124,7 @@ def create_cifar10_pipeline(
         parents=["train_model"],
     )
 
-    # Step 5: HPO
-    pipeline.add_function_step(
-        name="hpo",
-        function=hpo,
-        function_kwargs={
-            "base_task_id": "${train_model.training_task_id}",
-            "queue_name": "${pipeline.queue_name}",
-            # add more params for hpo...
-        },
-        task_type=Task.TaskTypes.optimizer,
-        task_name="HPO",
-        helper_functions=[job_complete_callback],
-        cache_executed_step=False,
-        function_return=["best_training_task_id"],
-        parents=["evaluate_model", "train_model"],
-    )
+    # Step 5: HPO (optionally HPO could be added.)
 
     ### You may add further evaluation, or model related tasks after finding the best model from HPO using the task.id or model.id (this depends on how you program hpo) as hpo returns this.
 

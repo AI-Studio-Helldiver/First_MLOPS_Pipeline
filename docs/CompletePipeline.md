@@ -1,6 +1,6 @@
 # CIFAR-10 Training Pipeline with ClearML
 
-This documentation provides a detailed guide on how to configure and run the CIFAR-10 training pipeline using ClearML. The pipeline automates the process from data upload to model evaluation, including a step for hyperparameter optimization (HPO).
+This documentation provides a detailed guide on how to configure and run the CIFAR-10 training pipeline using ClearML. The pipeline automates the process from data upload to model evaluation.
 
 ## Overview
 
@@ -54,7 +54,7 @@ After training, the model is evaluated on a test set to assess its performance a
 
 ### Step 5: Hyperparameter Optimization (HPO)
 
-Optionally, an HPO step can be included to optimize model parameters, improving model performance based on a predefined search space.
+Optionally, an HPO step can be included to optimize model parameters, improving model performance based on a predefined search space. (Task for students incase they want to do it.)
 
 ## Monitoring and Results
 

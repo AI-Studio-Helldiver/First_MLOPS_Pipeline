@@ -46,6 +46,7 @@ def create_cifar10_training_pipeline(
             "epochs": "${pipeline.epochs}",
             "project_name": "${pipeline.project_name}",
             "queue_name": "${pipeline.queue_name}",
+            "args": None,
         },
         task_type=Task.TaskTypes.training,
         task_name="Train Model",
